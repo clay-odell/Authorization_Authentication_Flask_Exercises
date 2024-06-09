@@ -4,8 +4,8 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, Length
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(max=20)])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(message="Username is required, and must be no longer than 20 characters."), Length(max=20)])
+    password = PasswordField('Password', validators=[DataRequired(message="Password is required")])
     email = StringField('Email', validators=[DataRequired(), Length(max=50)])
     first_name = StringField('First Name', validators=[DataRequired(), Length(max=30)])
     last_name = StringField('Last Name', validators=[DataRequired(), Length(max=30)])

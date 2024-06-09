@@ -30,14 +30,19 @@ def user_register():
         last_name = form.last_name.data
         new_user = User.register(username, password, email, first_name, last_name)
         db.session.add(new_user)
-        db.session.commit()        
+        db.session.commit()
+        session['user_id'] = new_user.id        
         return redirect('/secret')
     else:
+               
         return render_template('user_register.html', form=form)
         
 @app.route('/secret')
 def secrethome():
     """Renders Secret.html"""
+    if "user_id" not in session:
+        flash("Please login first!")
+        return redirect('/login')
     return render_template('secret.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -47,11 +52,21 @@ def user_login():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        check_user = User.authenticate(username, password)
-        if check_user:
-            return render_template('secret.html')
+        user = User.authenticate(username, password)
+        if user:
+            flash(f"Welcome Back, {user.username}!")
+            session['user_id'] = user.id
+            return redirect('/secret')
         else:
-            return redirect('/register')
+            form.password.errors.append('Invalid username/password')
+    return render_template('login_form.html', form=form)
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout_user():
+    if 'user_id' in session:
+        session.pop('user_id', None)
+        return redirect('/login')
     else:
-        return render_template('login_form.html', form=form)
-                
+        flash("You are not currently logged in.")
+        return redirect('/login')
+    
