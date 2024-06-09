@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}Delete User: {{user.username}}{% endblock %} {% block main %}
+<div class="container">
+    <h3 class="display-4">Delete User: {{ user.username }}</h3>
+    <p class="display-5">Are you sure you want to delete your account, {{user.first_name}}? <br>This can't be undone.</p>
+    <form action="/users/{{user.username}}" method="GET" class="form-group">
+        <input type="submit" class="btn btn-primary" value="Cancel">
+    </form> <br>
+    <form action="/users/{{user.username}}/delete" method="POST" class="form-group">
+        <input type="submit" class="btn btn-danger" value="Delete Account">
+    </form>
+</div>
+{% endblock %}

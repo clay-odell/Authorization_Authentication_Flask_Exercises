@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block title %}{{user.username}}'s Profile Information{% endblock %}{% block main %}
+
+<div class="container">
+    <h4>{{user.username}}'s Profile Page</h4>
+    <ul class="list-group">
+        <li class="list-group-item">Username: {{user.username}}</li>
+        <li class="list-group-item">User's Full Name: {{user.first_name}} {{user.last_name}}</li>
+        <li class="list-group-item">User's Feedback: {{user.feedback}}</li>
+        <form class="form-group" action="/users/{{user.username}}/feedback/edit">
+            <input type="submit" class="btn btn-success" value="Edit Feedback">
+        </form>
+        <br>
+        <form class="form-group" method="GET" action="/users/{{user.username}}/delete" class="form-group">
+            <input type="submit" class="btn btn-danger" value="Delete User">
+        </form>
+    </ul>
+</div>
+{% endblock %}
