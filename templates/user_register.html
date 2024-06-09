@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %}Register User{% endblock %} {% block
+main %}
+<div class="container-fluid">
+  <h2 class="display-4">Register User:</h2>
+  <form method="POST">
+    {{ form.hidden_tag() }}{% for field in form if field.widget.input_type !=
+    'hidden' %}{{ field.label (class="font-weight-bold col col-form-label
+    mx-auto")}}<br />{{ field }}<br />
+    {% for error in field.errors %}
+
+    <span class="alert alert-danger">{{ error }}</span>
+    {% endfor %} {% endfor %}
+    <br />
+    <input type="submit" value="Register" class="btn btn-success" />
+  </form>
+</div>
+{% endblock %}
