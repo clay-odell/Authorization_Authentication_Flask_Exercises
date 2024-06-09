@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block title %}Login Form{% endblock %} {% block
+    main %}
+    <div class="container-fluid">
+      <h3 class="display-5 text-center">Feedback Form</h3>
+      <div class="container-fluid">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div class="alert alert alert-danger">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" class="form-control">
+          {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
+          'hidden' %}
+          <h6>{{ field.label }}</h6>
+          {{field (class="form-control")}} {% for error in field.errors %}
+          <span class="alert alert-danger"> {{ error }} </span>
+          {% endfor %} {% endfor %}
+          <br />
+          <input type="submit" class="btn btn-success" value="Submit Feedback" />
+        </form>
+      </div>
+    </div>
+    
+    {% endblock %}

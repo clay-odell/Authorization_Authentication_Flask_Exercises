@@ -5,9 +5,15 @@
     <ul class="list-group">
         <li class="list-group-item">Username: {{user.username}}</li>
         <li class="list-group-item">User's Full Name: {{user.first_name}} {{user.last_name}}</li>
-        <li class="list-group-item">User's Feedback: {{user.feedback}}</li>
-        <form class="form-group" action="/users/{{user.username}}/feedback/edit">
-            <input type="submit" class="btn btn-success" value="Edit Feedback">
+        <li class="list-group-item">User's Feedback:
+            {% for feedback in user.feedback %} 
+            <div class="container">
+                <p><a href="/users/{{user.username}}/{{feedback.id}}/update"><strong>{{feedback.title}}</strong></a></p>
+            </div>
+            {% endfor %}
+        </li>
+        <form class="form-group" action="/users/{{user.username}}/feedback/add">
+            <input type="submit" class="btn btn-success" value="Add Feedback">
         </form>
         <br>
         <form class="form-group" method="GET" action="/users/{{user.username}}/delete" class="form-group">

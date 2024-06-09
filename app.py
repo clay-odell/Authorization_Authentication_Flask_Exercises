@@ -41,11 +41,12 @@ def user_register():
 def user_profile_view(username):
     """User Profile View"""
     user = User.query.filter_by(username=username).first()
+    feedback = Feedback.query.filter_by(username=username).all()
     if "user_id" not in session:
         flash("Please login first!")
         return redirect('/login')
     
-    return render_template('user_profile.html', user=user)
+    return render_template('user_profile.html', user=user, feedback=feedback)
 
 @app.route('/login', methods=['GET', 'POST'])
 def user_login():
@@ -100,3 +101,26 @@ def delete_user_get(username):
         flash("You can only delete your own account.")
         return redirect(f'/users/{user.username}')
     return render_template('delete_user.html', user=user)
+
+@app.route('/users/<username>/feedback/add', methods=['GET', 'POST'])
+def add_user_feedback(username):
+    """Add User Feedback"""
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        flash("User not found.", "danger")
+        return redirect('login')
+    elif 'username' not in session or session['username'] != username:
+        flash("You must be logged in to post feedback.", "danger")
+        return redirect('/login')
+    form = FeedbackForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        feedback = Feedback(title=title, content=content, username=username)
+        db.session.add(feedback)
+        db.session.commit()
+        flash("Your feedback has been posted.", "success")
+        return redirect(f'/users/{user.username}')
+    return render_template('feedback_form.html', form=form, user=user)
+    
+    
