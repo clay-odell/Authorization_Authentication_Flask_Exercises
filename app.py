@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, session, flash, request
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, User
-from forms import RegistrationForm
+from forms import RegistrationForm, LoginForm
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:01302@localhost/users_demo'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -38,4 +38,20 @@ def user_register():
 @app.route('/secret')
 def secrethome():
     """Renders Secret.html"""
-    return render_template('secret.html')        
+    return render_template('secret.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def user_login():
+    """Login User Accepts Username & Password"""
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        check_user = User.authenticate(username, password)
+        if check_user:
+            return render_template('secret.html')
+        else:
+            return redirect('/register')
+    else:
+        return render_template('login_form.html', form=form)
+                
