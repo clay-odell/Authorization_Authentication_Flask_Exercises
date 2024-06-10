@@ -1,27 +1,30 @@
-{% extends "base.html" %} {% block title %}Edit Feedback Form{% endblock %} {% block
-    main %}
-    <div class="container-fluid">
-      <h3 class="display-5 text-center">Edit Feedback Form</h3>
-      <div class="container-fluid">
-        {% with messages = get_flashed_messages() %} {% if messages %}
-        <div class="alert alert alert-danger">
-            {% for message in messages %}
-            {{ message }}
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
-        <form method="POST" class="form-control">
-          {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
-          'hidden' %}
-          <h6>{{ field.label }}</h6>
-          {{field (class="form-control")}} {% for error in field.errors %}
-          <span class="alert alert-danger"> {{ error }} </span>
-          {% endfor %} {% endfor %}
-          <br />
-          <input type="submit" class="btn btn-success" value="Edit Feedback" />
-        </form>
-      </div>
+{% extends "base.html" %} {% block title %}Edit Feedback Form{% endblock %} {%
+block main %}
+<div class="container-fluid">
+  <h3 class="display-5 text-center">Edit Feedback Form</h3>
+  <div class="container-fluid">
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div class="alert alert alert-danger">
+      {% for message in messages %} {{ message }} {% endfor %}
     </div>
-    
-    {% endblock %}
+    {% endif %} {% endwith %}
+    <form method="POST" class="form-control">
+      {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
+      'hidden' %}
+      <h6>{{ field.label }}</h6>
+      {{field (class="form-control")}} {% endfor %}
+      <br />
+      <input type="submit" class="btn btn-success" value="Edit Feedback" />
+    </form>
+    <br />
+    <form action="/users/{{feedback.username}}" class="text-center">
+        <input type="submit" class="btn btn-outline-warning" value="Cancel">
+    </form> <br>
+    <form action="/feedback/{{feedback.id}}/delete" class="text-center">
+        <input type="submit" class="btn btn-danger" value="Delete Post">
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

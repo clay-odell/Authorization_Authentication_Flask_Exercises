@@ -140,7 +140,14 @@ def update_feedback_patch(feedback_id):
        db.session.commit()
        return redirect(f'/users/{feedback.username}')
         
-    
-        
+@app.route('/feedback/<feedback_id>/delete', methods=['GET', 'POST'])
+def delete_feedback(feedback_id):
+        feedback = Feedback.query.get(feedback_id)
+        if request.method == 'POST':
+            db.session.delete(feedback)
+            db.session.commit()
+            return redirect(f'/users/{feedback.username}')
+        else:
+            return render_template('delete_feedback.html', feedback=feedback)
         
     
