@@ -8,7 +8,7 @@
         <li class="list-group-item">User's Feedback:
             {% for feedback in user.feedback %} 
             <div class="container">
-                <p><a href="/users/{{user.username}}/{{feedback.id}}/update"><strong>{{feedback.title}}</strong></a></p>
+                <p><a href="/feedback/{{feedback.id}}/update"><strong>{{feedback.title}}</strong></a></p>
             </div>
             {% endfor %}
         </li>

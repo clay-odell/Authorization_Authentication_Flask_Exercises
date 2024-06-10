@@ -123,4 +123,24 @@ def add_user_feedback(username):
         return redirect(f'/users/{user.username}')
     return render_template('feedback_form.html', form=form, user=user)
     
+@app.route('/feedback/<feedback_id>/update', methods=['GET'])
+def update_feedback_get(feedback_id):
+    feedback = Feedback.query.get(feedback_id)
+    user = Feedback.query.filter_by(username=feedback.username).first()
+    form = FeedbackForm()
+    return render_template('edit_feedback.html', feedback=feedback, form=form, user=user)
+
+@app.route('/feedback/<feedback_id>/update', methods=['POST'])
+def update_feedback_patch(feedback_id):
+   feedback = Feedback.query.get(feedback_id)
+   form = FeedbackForm()
+   if form.validate_on_submit():
+       feedback.title = form.title.data
+       feedback.content = form.content.data
+       db.session.commit()
+       return redirect(f'/users/{feedback.username}')
+        
+    
+        
+        
     
